@@ -1,0 +1,49 @@
+version: "2.1"
+
+services:
+  portfolio-backend:
+    build: ./backend
+    container_name: portfolio-backend
+    networks:
+      - proxy
+    expose:
+      - 3001
+    environment:
+      - TZ=Europe/Paris
+      - RUST_LOG=info
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.portfolio-api-secure.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-api-secure.rule=Host(`me.maxime-pointet.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.portfolio-api-secure.service=portfolio-api"
+      - "traefik.http.services.portfolio-api.loadbalancer.server.port=3001"
+      - "traefik.http.routers.portfolio-api-secure.tls=true"
+      - "traefik.http.routers.portfolio-api-secure.tls.certresolver=letsencrypt"
+    restart: unless-stopped
+
+  portfolio-frontend:
+    build: ./frontend
+    container_name: portfolio-frontend
+    networks:
+      - proxy
+    expose:
+      - 80
+    environment:
+      - TZ=Europe/Paris
+    depends_on:
+      - portfolio-backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.portfolio-secure.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-secure.rule=Host(`me.maxime-pointet.fr`)"
+      - "traefik.http.routers.portfolio-secure.service=portfolio"
+      - "traefik.http.services.portfolio.loadbalancer.server.port=80"
+      - "traefik.http.routers.portfolio-secure.tls=true"
+      - "traefik.http.routers.portfolio-secure.tls.certresolver=letsencrypt"
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
