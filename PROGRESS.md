@@ -1,6 +1,6 @@
 # 📊 Portfolio Web - Progress Tracker
 
-## 🎯 **État Actuel (27 Jun 2025)**
+## 🎯 **État Actuel (28 Jun 2025 - Session Docker Complétée)**
 
 ### ✅ **Terminé - MVP Fonctionnel**
 - [x] **Backend Axum (Rust)** - API REST complète avec routes de contact
@@ -12,20 +12,24 @@
 - [x] **Build fonctionnel** - Tests TypeScript passés
 - [x] **Git repository** - Premier commit effectué (https://github.com/Pixma44/portfolio)
 
-### ✅ **Terminé - Dockerisation MVP**
-- [x] **Backend Dockerfile** - Multi-stage Rust build avec optimisations
-- [x] **Frontend Dockerfile** - Vue build + Nginx avec config personnalisée
+### ✅ **Terminé - Dockerisation MVP COMPLÈTE**
+- [x] **Backend Dockerfile** - Multi-stage Rust 1.82 build (fixé Cargo.lock issue)
+- [x] **Frontend Dockerfile** - Vue build + Nginx (fixé npm ci dev dependencies)
 - [x] **Docker-compose.yml** - Intégration Traefik style maxime-pointet.fr
-- [x] **.dockerignore** - Pour backend, frontend et root
+- [x] **.dockerignore** - Pour backend, frontend et root (optimisés)
 - [x] **Nginx config** - Proxy API + SPA routing + sécurité
+- [x] **Tests Docker réussis** - Backend + Frontend builds OK
+- [x] **Test docker-compose OK** - Containers démarrent (proxy network créé)
+- [x] **Commit Git** - 08279dd "feat: Add Docker configuration for MVP deployment"
 
 ## 🚀 **Prochaines Étapes Immédiates**
 
-### 🔄 **Phase 1: Test & Deploy MVP**
-- [ ] **Test build Docker** - `docker build -t portfolio-backend ./backend`
-- [ ] **Test build frontend** - `docker build -t portfolio-frontend ./frontend`
-- [ ] **Test docker-compose** - `docker-compose up --build`
-- [ ] **Commit Dockerisation** - Push vers GitHub
+### 🔄 **Phase 1: Deploy MVP (PRÊT !)**
+- [x] **Test build Docker** - ✅ `docker build -t portfolio-backend ./backend`
+- [x] **Test build frontend** - ✅ `docker build -t portfolio-frontend ./frontend`
+- [x] **Test docker-compose** - ✅ `docker-compose up --build`
+- [x] **Commit Dockerisation** - ✅ Push vers GitHub
+- [ ] **Push vers GitHub** - `git push origin main`
 - [ ] **Deploy sur serveur** - Via docker-compose sur ton serveur
 
 ### 🗄️ **Phase 2: Migration SurrealDB (Après MVP)**
@@ -79,42 +83,56 @@ portfolio-web/
 - **Langues** : Français natif, Anglais C1 (TOEIC 875), Espagnol
 - **Logos réels** : Extraits des PDFs via OCR
 
-## 🚨 **Notes Importantes**
+## 🚨 **Issues Résolues & Lessons Learned**
 
-### **Docker Installation**
-- Docker vient d'être installé
-- Redémarrage nécessaire pour WSL2 integration
-- Tests à effectuer après redémarrage
+### **Fixes Appliqués Cette Session**
+- **Backend .dockerignore** : Retiré `Cargo.lock` de .dockerignore (nécessaire pour le build)
+- **Backend Dockerfile** : Rust 1.75 → 1.82 (compatibilité Cargo.lock version 4)
+- **Frontend Dockerfile** : `npm ci --only=production` → `npm ci` (vue-tsc dev dependency nécessaire)
+- **Frontend Dockerfile** : FROM case match `as` → `AS`
+- **Test réseau** : Créé network `proxy` localement pour test docker-compose
 
-### **Prochaine Session**
-1. **Tester les builds Docker** localement
-2. **Valider docker-compose** avec Traefik simulation
-3. **Push commit Docker** vers GitHub
-4. **Deploy MVP** sur ton serveur
-5. **Planifier migration SurrealDB** pour iteration suivante
+### **État Git Actuel**
+- **Branch** : main
+- **Last commit** : 08279dd "feat: Add Docker configuration for MVP deployment"
+- **Status** : Ready to push (1 commit ahead of origin/main)
+- **Files added** : 8 files (Dockerfiles, docker-compose.yml, .dockerignore, nginx.conf, PROGRESS.md)
+
+### **Prochaine Session Immédiate**
+1. **`git push origin main`** - Publier les Docker configs
+2. **Sur serveur** - `git pull && docker-compose up -d`
+3. **DNS** - CNAME `me.maxime-pointet.fr` vers serveur
+4. **Vérification** - Test HTTPS + API routing
 
 ### **Contact & Config**
 - **Git** : maxi.p@hotmail.fr / Maxime Pointet
-- **Serveur** : Traefik + Authelia existants
-- **DNS** : Un seul CNAME `me.maxime-pointet.fr` nécessaire
+- **Serveur** : Traefik + Authelia existants (réseau proxy requis)
+- **Domaine cible** : `me.maxime-pointet.fr`
 
 ---
 
-## 📝 **Commandes de Reprise**
+## 📝 **Commandes de Reprise Prochaine Session**
 
 ```bash
-# Après redémarrage
+# Reprendre le projet
 cd /home/pixma/portfolio-web
 
-# Tests Docker
-docker build -t portfolio-backend ./backend
-docker build -t portfolio-frontend ./frontend
-docker-compose up --build
+# État actuel (devrait être clean)
+git status
+git log --oneline -3
 
-# Si OK, commit et deploy
-git add .
-git commit -m "feat: Add Docker configuration for MVP deployment"
+# Push vers GitHub
 git push origin main
+
+# Sur le serveur (après push)
+# docker-compose up -d
 ```
 
-**🎯 Objectif : MVP en ligne sur me.maxime-pointet.fr !**
+## 🎯 **Objectifs Atteints**
+✅ **MVP Portfolio Web complètement dockerisé et prêt pour production !**
+- Builds Docker fonctionnels (backend Rust + frontend Vue/Nginx)
+- Configuration Traefik intégrée pour déploiement
+- Tests réussis en local
+- Code versionné et prêt à push
+
+**🚀 Prochain objectif : Portfolio en ligne sur me.maxime-pointet.fr !**
